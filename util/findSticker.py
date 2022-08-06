@@ -33,9 +33,11 @@ def init():
 
 def main():
     init()
-    print("init.... done")
+    print("初始化.... 结束")
     while(True):
-        tag=input()
+        tag=input("请输入你想要查询的tag，目前会返回文件名。输入eof退出")
+        if tag == "eof":
+            return
         print(lookupInDB(tag))
 
 main()
