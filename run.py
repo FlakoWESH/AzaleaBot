@@ -14,6 +14,7 @@ test_config = read(os.path.join(os.path.dirname(__file__), "config.yaml"))
 
 activeChannel=["9534920"]
 startup="Azalea已经启动！"
+helpContent="Azalea bot 使用帮助\n\t1. 表情包 关键词；将会在本地搜索并发送关键词相关的表情包\n\t2. 天气 城市名; 输入中文城市名将启用国内查询，输入英文城市名启用全球查询。"
 
 class MyClient(botpy.Client):
     async def on_ready(self):
@@ -35,8 +36,18 @@ class MyClient(botpy.Client):
                 stickers=handler.getStickers(words[1])
                 for sticker in stickers:
                     await message.reply(file_image=sticker)
+        elif content.startswith("天气"):
+            if len(content)<=3 :
+                await message.reply(content="未检测到城市名")
+            else:
+                cityName=content[3:]
+                print(cityName,cityName[0].encode("utf-8").isalpha())
+                if cityName[0].encode("utf-8").isalpha():
+                    await message.reply(content=handler.handleGlobalWeather(cityName))
+                else:
+                    await message.reply(content=handler.handleNativeWeather(cityName))
         elif content.startswith("帮助") or content.startswith("help"):
-            await message.reply(content="Azalea bot 使用帮助\n\t1. 表情包 关键词；将会在本地搜索并发送关键词相关的表情包\n")
+            await message.reply(content=helpContent)
         else:
             await message.reply(content=message.content)
 
