@@ -1,6 +1,6 @@
 stickerPath="resource/sticker/"
 
-stickFolder=["snow miku/","SNOW MIKU 2017&Yukine(HATSUNE MIKU)_4994420_sticker/","洛天依/"]
+stickFolder=["snow miku/","SNOW MIKU 2017&Yukine(HATSUNE MIKU)_4994420_sticker/","洛天依/","初音未来周年纪念/","未来有你/"]
 
 DB={}
 
