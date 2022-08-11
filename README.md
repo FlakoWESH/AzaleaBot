@@ -10,3 +10,7 @@
 ## 参与人员
  + Flako小姐
  + Spica先生
+## 或许可能用上的资源
+ + https://openhome.bilibili.com/doc
+ + https://github.com/InfinityLoop1309/NewPipeEnhanced
+ + https://github.com/SocialSisterYi/bilibili-API-collect
