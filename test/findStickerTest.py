@@ -1,14 +1,13 @@
 import os.path
 
-import util.findSticker
+import handler
 
 testCase=["SNOW MIKU 2017","洛天依"]
 
 def test():
-    util.findSticker.init()
     for str in testCase:
-        result=util.findSticker.lookupInDB(str)
-        assert len(result) != 0
+        result=handler.getStickers(str)
+        assert len(result) > 0 and len(result) <= 3
         for file in result:
             assert os.path.isfile(file)
 
