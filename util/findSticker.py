@@ -1,4 +1,6 @@
-stickFolder=["util/snow miku/","util/SNOW MIKU 2017&Yukine(HATSUNE MIKU)_4994420_sticker/","util/洛天依/"]
+stickerPath="resource/sticker/"
+
+stickFolder=["snow miku/","SNOW MIKU 2017&Yukine(HATSUNE MIKU)_4994420_sticker/","洛天依/"]
 
 DB={}
 
@@ -6,7 +8,9 @@ import os
 
 def getAllStickers(path):
     dir_list = os.listdir(path)
-    return [path + s for s in dir_list]
+    allFiles= [path + s for s in dir_list]
+    return list(filter(lambda file: os.path.isfile(file), allFiles))
+
 
 def handleOneFile(filename):
     def addIntoDB(tag,filename):
@@ -14,7 +18,7 @@ def handleOneFile(filename):
             DB[tag]=[]
         DB[tag].append(filename)
     names=os.path.splitext(filename)
-    stickerTags=names[0].split("-")
+    stickerTags=names[0].split("_")
     for tag in stickerTags:
         addIntoDB(tag,filename)
     addIntoDB(names[1][1:],filename)
@@ -28,5 +32,5 @@ def lookupInDB(tag):
 
 def init():
     for folder in stickFolder:
-        for stick in getAllStickers(folder):
+        for stick in getAllStickers(stickerPath+folder):
             handleOneFile(stick)
