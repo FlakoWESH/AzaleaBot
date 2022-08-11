@@ -18,7 +18,7 @@ def handleOneFile(filename):
             DB[tag]=[]
         DB[tag].append(filename)
     names=os.path.splitext(filename)
-    stickerTags=names[0].split("-")
+    stickerTags=names[0].split("_")
     for tag in stickerTags:
         addIntoDB(tag,filename)
     addIntoDB(names[1][1:],filename)
