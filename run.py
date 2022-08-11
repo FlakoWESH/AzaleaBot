@@ -34,8 +34,11 @@ class MyClient(botpy.Client):
                 await message.reply(content="未检测到表情包关键词")
             else:
                 stickers=handler.getStickers(words[1])
-                for sticker in stickers:
-                    await message.reply(file_image=sticker)
+                if len(stickers) ==0:
+                    await message.reply(content="未找到相关表情包")
+                else:
+                    for sticker in stickers:
+                        await message.reply(file_image=sticker)
         elif content.startswith("天气"):
             if len(content)<=3 :
                 await message.reply(content="未检测到城市名")
