@@ -44,7 +44,6 @@ class MyClient(botpy.Client):
                 await message.reply(content="未检测到城市名")
             else:
                 cityName=content[3:]
-                print(cityName,cityName[0].encode("utf-8").isalpha())
                 if cityName[0].encode("utf-8").isalpha():
                     await message.reply(content=handler.handleGlobalWeather(cityName))
                 else:
