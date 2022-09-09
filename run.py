@@ -1,29 +1,37 @@
 # -*- coding: utf-8 -*-
 import asyncio
+import datetime
 import os
 
 import botpy
-from botpy import logging
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from botpy.ext.cog_yaml import read
 from botpy.message import Message
-from typing import Union
+
 
 import handler
 
 test_config = read(os.path.join(os.path.dirname(__file__), "config.yaml"))
 
-activeChannel=["9534920"]
 startup="Azalea已经启动！"
 helpContent="Azalea bot 使用帮助\n\t1. 表情包 关键词；将会在本地搜索并发送关键词相关的表情包\n\t2. 天气 城市名; 输入中文城市名将启用国内查询，输入英文城市名启用全球查询。"
 
 class MyClient(botpy.Client):
+    async def dailyHello(self, str):
+        for id in test_config["activeChannel"]:
+            for userID in test_config["userID"]:
+                await self.api.post_message(channel_id=id, content=str+"<@"+userID+">"+ " 现在的时间是："+datetime.datetime.now().strftime("%H:%M:%S")+"\n"
+                                        +handler.handleNativeWeather("克拉玛依")+"\n"+handler.handleGlobalWeather("Salt Lake City"))
+
     async def on_ready(self):
-        for id in activeChannel:
+        for id in test_config["activeChannel"]:
             await self.api.post_message(channel_id=id, content=startup)
 
     async def on_at_message_create(self, message: Message):
         if "sleep" in message.content:
             await asyncio.sleep(10)
+        print("User id:"+message.author.id)
         await message.reply(content=f"机器人{self.robot.name}收到你的@消息了: {message.content}")
 
     async def on_message_create(self, message: Message):
@@ -61,4 +69,8 @@ if __name__ == "__main__":
     # 通过kwargs，设置需要监听的事件通道
     intents = botpy.Intents(public_guild_messages=True, guild_messages=True)
     client = MyClient(intents=intents)
+    scheduler=AsyncIOScheduler()
+    scheduler.add_job(client.dailyHello, CronTrigger.from_crontab('0 8 * * *'),args=["早上好！"])
+    scheduler.add_job(client.dailyHello, CronTrigger.from_crontab('0 20 * * *'),args=["晚上好！"])
+    scheduler.start()
     client.run(appid=test_config["appid"], token=test_config["token"])
